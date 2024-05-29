@@ -7,10 +7,8 @@ import BookingModal from '../Modal/BookingModal/BookingModal';
 import useAuth from '../../hooks/useAuth';
 
 
-const RoomReservation = ({ room }) => {
+const RoomReservation = ({ room, refetch }) => {
   
-  // console.log('start date-->', new Date(room.from).toLocaleDateString());
-  // console.log('End date-->', new Date(room.to).toLocaleDateString());
   const [isOpen, setIsOpen] = useState(false);
   const {user} = useAuth();
   const [state, setState] = useState([
@@ -24,13 +22,6 @@ const RoomReservation = ({ room }) => {
   const closeModal = () => {
     setIsOpen(false);
   }
-
-
-
-
-
-
-
 
   // total days * price 
   const totalPrice = parseInt(
@@ -69,12 +60,13 @@ const RoomReservation = ({ room }) => {
       </div>
       <hr />
       <div className='p-4'>
-        <Button onClick={() => setIsOpen(true)} label={'Reserve'} />
+        <Button disabled={room?.booked === true} onClick={() => setIsOpen(true)} label={room?.booked === true? 'Booked' : 'Reserve'} />
       </div>
 
     {/* modal */}
-
-    <BookingModal isOpen={isOpen} closeModal={closeModal} bookingInfo={{...room, price: totalPrice, guest: {name: user?.displayName}}} />
+    <BookingModal isOpen={isOpen}
+    refetch={refetch}
+    closeModal={closeModal} bookingInfo={{...room, price: totalPrice, guest: {name: user?.displayName, email: user?.email, image: user?.photoURL}}} />
 
       <hr />
       <div className='p-4 flex items-center justify-between font-semibold text-lg'>
@@ -87,6 +79,7 @@ const RoomReservation = ({ room }) => {
 
 RoomReservation.propTypes = {
   room: PropTypes.object,
+  refetch: PropTypes.func
 }
 
 export default RoomReservation
