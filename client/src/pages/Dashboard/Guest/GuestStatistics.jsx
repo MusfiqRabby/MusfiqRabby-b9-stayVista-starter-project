@@ -1,30 +1,28 @@
 import { Calendar } from 'react-date-range'
 import { FaDollarSign } from 'react-icons/fa'
-import { BsFillCartPlusFill, BsFillHouseDoorFill } from 'react-icons/bs'
+import { BsFillCartPlusFill } from 'react-icons/bs'
 import { GiPlayerTime } from 'react-icons/gi'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner'
 import SalesLineChart from '../../../components/Dashboard/Sidebar/SlesLineChart'
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns'
 
-
-
-const HostStatistics = () => {
+const GuestStatistics = () => {
  
     const axiosSecure = useAxiosSecure()
 
     const {data: statData ={}, isLoading} = useQuery({
         queryKey: ['statData'],
         queryFn: async () => {
-            const {data} = await axiosSecure.get('/host-stat')
+            const {data} = await axiosSecure.get('/guest-stat')
             return data
         },
     })
     console.log(statData);
 
     if(isLoading) return <LoadingSpinner/>
-
+ 
  
  
     return (
@@ -32,7 +30,7 @@ const HostStatistics = () => {
       <div className='mt-12'>
         {/* small cards */}
         <div className='mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-          {/* Sales Card */}
+          {/* Spent Card */}
           <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
@@ -41,10 +39,10 @@ const HostStatistics = () => {
             </div>
             <div className='p-4 text-right'>
               <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Sales
+                Total Spent
               </p>
               <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                ${statData?.totalPrice}
+                $ {statData?.totalPrice}
               </h4>
             </div>
           </div>
@@ -58,26 +56,10 @@ const HostStatistics = () => {
             </div>
             <div className='p-4 text-right'>
               <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Bookings
+              Total Bookings
               </p>
               <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
               {statData?.totalBookings}
-              </h4>
-            </div>
-          </div>
-          {/* Total Rooms */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
-            <div
-              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
-            >
-              <BsFillHouseDoorFill className='w-6 h-6 text-white' />
-            </div>
-            <div className='p-4 text-right'>
-              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Rooms
-              </p>
-              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-              {statData?.totalRooms}
               </h4>
             </div>
           </div>
@@ -91,10 +73,10 @@ const HostStatistics = () => {
             </div>
             <div className='p-4 text-right'>
               <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Host Since...
+                Guest Since...
               </p>
               <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                {statData?.hostSince && formatDistanceToNow(new Date(statData?.hostSince))}
+              {statData?.guestSince && formatDistanceToNow(new Date(statData?.guestSince))}
               </h4>
             </div>
           </div>
@@ -116,4 +98,4 @@ const HostStatistics = () => {
   )
 }
 
-export default HostStatistics
+export default GuestStatistics
